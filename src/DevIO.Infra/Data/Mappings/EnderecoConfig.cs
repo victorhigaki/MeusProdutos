@@ -12,7 +12,7 @@ namespace DevIO.Infra.Data.Mappings
             Property(c => c.Logradouro)
                 //.HasColumnName("Rua")
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(200);
 
             Property(c => c.Numero)
                 .IsRequired()
