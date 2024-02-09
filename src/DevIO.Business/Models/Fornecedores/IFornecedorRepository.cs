@@ -6,7 +6,7 @@ namespace DevIO.Business.Models.Fornecedores
 {
     public interface IFornecedorRepository : IRepository<Fornecedor>
     {
-        Task<Fornecedor> ObterFOrnecedorEndereco(Guid id);
+        Task<Fornecedor> ObterFornecedorEndereco(Guid id);
         Task<Fornecedor> ObterFOrnecedorProdutosEndereco(Guid id);
     }
 }
