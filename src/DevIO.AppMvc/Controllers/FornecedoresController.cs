@@ -12,31 +12,31 @@ namespace DevIO.AppMvc.Controllers
 
         public FornecedoresController()
         {
-            _fornecedorService = new FornecedorService(new FornecedorRepository(), new EnderecoRepository());
+            //_fornecedorService = new FornecedorService(new FornecedorRepository(), new EnderecoRepository());
         }
 
         // GET: Fornecedores
         public async Task<ActionResult> Index()
         {
-            var fornecedor = new Fornecedor()
-            {
-                Nome = "Eduardo",
-                Documento = "30390600822",
-                Endereco = new Endereco
-                {
-                    Logradouro = "Rua Teste",
-                    Numero = "123",
-                    Complemento = "Teste",
-                    Bairro = "Teste",
-                    Cep = "12345678",
-                    Cidade = "Teste",
-                    Estado = "Teste",
-                },
-                TipoFornecedor = TipoFornecedor.PessoaFisica,
-                Ativo = true
-            };
+            //var fornecedor = new Fornecedor()
+            //{
+            //    Nome = "Eduardo",
+            //    Documento = "30390600822",
+            //    Endereco = new Endereco
+            //    {
+            //        Logradouro = "Rua Teste",
+            //        Numero = "123",
+            //        Complemento = "Teste",
+            //        Bairro = "Teste",
+            //        Cep = "12345678",
+            //        Cidade = "Teste",
+            //        Estado = "Teste",
+            //    },
+            //    TipoFornecedor = TipoFornecedor.PessoaFisica,
+            //    Ativo = true
+            //};
 
-            await _fornecedorService.Adicionar(fornecedor);
+            //await _fornecedorService.Adicionar(fornecedor);
 
             return new EmptyResult();
         }
