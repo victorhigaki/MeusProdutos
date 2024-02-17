@@ -1,9 +1,11 @@
-﻿using DevIO.AppMvc.ViewModels;
+﻿using AutoMapper;
+using DevIO.AppMvc.ViewModels;
 using DevIO.Business.Core.Notificacoes;
 using DevIO.Business.Models.Produtos;
 using DevIO.Business.Models.Produtos.Services;
 using DevIO.Infra.Data.Repository;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,23 +17,23 @@ namespace DevIO.AppMvc.Controllers
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IProdutoService _produtoService;
+        private readonly IMapper _mapper;
 
         public ProdutosController()
         {
-            _produtoRepository = new ProdutoRepository();
-            _produtoService = new ProdutoService(_produtoRepository, new Notificador());
+
         }
 
         // GET: Produtos
         public async Task<ActionResult> Index()
         {
-            return View(await _produtoRepository.ObterTodos());
+            return View(_mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoRepository.ObterTodos()));
         }
 
         // GET: Produtos/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
-            var produto = await _produtoRepository.ObterPorId(id);
+            var produtoViewModel = await ObterProduto(id);
 
             if (produtoViewModel == null)
             {
@@ -55,7 +57,7 @@ namespace DevIO.AppMvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                _produtoService.Adicionar(produtoViewModel);
+                await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
                 return RedirectToAction("Index");
             }
 
@@ -117,6 +119,12 @@ namespace DevIO.AppMvc.Controllers
             db.ProdutoViewModels.Remove(produtoViewModel);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        private async Task<ProdutoViewModel> ObterProduto(Guid id)
+        {
+            var produto = _mapper.Map<ProdutoViewModel>(await _produtoRepository.ObterProdutoFornecedor(id));
+            return produto;
         }
 
         protected override void Dispose(bool disposing)
