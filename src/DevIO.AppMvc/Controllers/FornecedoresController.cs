@@ -29,6 +29,19 @@ namespace DevIO.AppMvc.Controllers
             return View(_mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorRepository.ObterTodos()));
         }
 
+        [Route("dados-do-fornecedor/{id:guid}")]
+        public async Task<ActionResult> Details(Guid id)
+        {
+            var fornecedorVIewModel = await ObterFornecedorEndereco(id);
+
+            if (fornecedorVIewModel == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(fornecedorVIewModel);
+        }
+
         [Route("novo-fornecedor")]
         public ActionResult Create()
         {
@@ -52,7 +65,7 @@ namespace DevIO.AppMvc.Controllers
         }
 
         [Route("editar-fornecedor/{id:guid}")]
-        public async Task<ActionResult> Editar(Guid id)
+        public async Task<ActionResult> Edit(Guid id)
         {
             var fornecedorViewModel = await ObterFornecedorEndereco(id);
 
@@ -66,7 +79,7 @@ namespace DevIO.AppMvc.Controllers
 
         [Route("editar-fornecedor/{id:guid}")]
         [HttpPost]
-        public async Task<ActionResult> Editar(Guid id, FornecedorViewModel fornecedorViewModel)
+        public async Task<ActionResult> Edit(Guid id, FornecedorViewModel fornecedorViewModel)
         {
             if (id != fornecedorViewModel.Id) return HttpNotFound();
 
