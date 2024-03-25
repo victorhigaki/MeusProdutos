@@ -23,6 +23,10 @@ namespace DevIO.Business.Models.Fornecedores.Services
 
         public async Task Adicionar(Fornecedor fornecedor)
         {
+            // Limitações do EF 6 fora de convenção
+            fornecedor.Endereco.Id = fornecedor.Id;
+            fornecedor.Endereco.Fornecedor = fornecedor;
+
             if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)
                 || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return;
 
@@ -68,10 +72,10 @@ namespace DevIO.Business.Models.Fornecedores.Services
 
         private async Task<bool> FornecedorExistente(Fornecedor fornecedor)
         {
-            var fornecedorAtual = 
+            var fornecedorAtual =
                 await _fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento && f.Id != fornecedor.Id);
 
-            if (fornecedorAtual.Any())
+            if (!fornecedorAtual.Any())
             {
                 return false;
             }
