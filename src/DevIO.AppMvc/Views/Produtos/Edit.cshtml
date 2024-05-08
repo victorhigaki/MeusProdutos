@@ -7,10 +7,10 @@
 <h2>@ViewBag.Title</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Produtos", FormMethod.Post, new { enctype = "multipart/form-data", id = "produtoForm" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -18,7 +18,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.FornecedorId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 @Html.DropDownListFor(model => model.FornecedorId,
                    new SelectList(Model.Fornecedores, "Id", "Nome"),
@@ -30,7 +30,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
+            <div class="col-md-3">
                 @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
             </div>
@@ -38,23 +38,40 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Descricao, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
+            <div class="col-md-3">
                 @Html.EditorFor(model => model.Descricao, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Descricao, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Imagem, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
-                @Html.EditorFor(model => model.Imagem, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Imagem, "", new { @class = "text-danger" })
+            <label class="control-label col-md-2">Imagem Atual</label>
+            <div class="col-md-3">
+                <img src="~/imagens/@Model.Imagem" alt="@Model.Imagem" style="width: 70px; height: 100px" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImagemUpload, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" name="ImagemNome" id="ImagemNome" class="form-control" />
+                    <span class="input-group-btn">
+                        <label class="btn btn-primary" for="ImagemUpload">
+                            <input class="form-control" id="ImagemUpload" name="ImagemUpload" type="file" style="display: none"
+                                   onChange="$('#ImagemNome').val(this.files[0].name); $('#ImagemUpload').blur()" />
+                            <span class="glyphicon glyphicon-cloud-upload"></span>
+                        </label>
+                    </span>
+                </div>
+
+                @Html.ValidationMessage("ImagemNome", "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Valor, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
+            <div class="col-md-3">
                 @Html.EditorFor(model => model.Valor, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Valor, "", new { @class = "text-danger" })
             </div>
@@ -62,7 +79,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Ativo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.Ativo)
                     @Html.ValidationMessageFor(model => model.Ativo, "", new { @class = "text-danger" })
@@ -84,4 +101,13 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $('#produtoForm').submit(function () {
+            const valor = $('#Valor').val();
+            $('#Valor').val(valor.replace(".", ""));
+        });
+
+        $("#Valor").attr("data-val-number", "Moeda em formato inválido");
+    </script>
 }
