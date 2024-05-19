@@ -17,6 +17,8 @@ namespace DevIO.Infra.Data.Repository
 
         public async Task<Produto> ObterProdutoFornecedor(Guid id)
         {
+            throw new Exception("Ocorreu um erro!");
+
             return await Db.Produtos.AsNoTracking().Include(f => f.Fornecedor)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
